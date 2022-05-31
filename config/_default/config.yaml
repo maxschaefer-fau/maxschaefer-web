@@ -3,7 +3,7 @@
 # Hugo Documentation: https://gohugo.io/getting-started/configuration/#all-configuration-settings
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
-title: Maximilian Schäfer # Website name
+title: Maximilian Schaefer # Website name
 baseURL: 'https://https://www.maximilianschaefer.org' # Website URL
 
 ############################
