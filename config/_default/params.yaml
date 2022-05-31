@@ -26,6 +26,18 @@ marketing:
   verification:
     google: ''
     baidu: ''
+	
+# Contact (edit or remove options as required)
+email: max.schaefer@fau.de
+phone: 
+name: Dr. Maximilian Schaefer
+address:
+  street: Heidestr. 8
+  city: Gunzenhausen
+  region: 
+  postcode: '91710, Germany'
+  country: Germany
+  country_code: DE	
 
 # Site header
 
