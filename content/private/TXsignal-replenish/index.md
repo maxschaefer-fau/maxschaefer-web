@@ -29,6 +29,15 @@ url_demo: "/publication/TXsignal-replenish/"
 6. [*Performance analysis*](#6-analysis-of-runtime-and-complexity)
 7. [*References*](#7-references) 
 
+### Chemical Reaction - Theory 
+
+$$ 
+\ce{E + (R)man <=>[$k_1$][$k_{-1}$] E*(R)man <=>[$k_2$][$k_{-2}$] E*(S)man 
+	<=>[$k_3$][$k_{-3}$]E + (S)man},
+$$
+
+
+
 ### 1. Preliminaries
 
 We note that the variables in the presented formulas are defined in [[1]](#7-references).
