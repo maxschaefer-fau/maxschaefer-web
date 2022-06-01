@@ -29,6 +29,14 @@ url_demo: "/publication/TXsignal-replenish/"
 6. [*Performance analysis*](#6-analysis-of-runtime-and-complexity)
 7. [*References*](#7-references) 
 
+
+### System Model 
+
+#### Overall System Model 
+
+#### Reloading Mechanism 
+
+
 ### Chemical Reaction 
 
 The enzyme _Mandelate Racemase (MR)_ performs a reversible one-substrate-reaction of _(R)-Mandelate_ (type A molecules) to _(S)-Mandelate_ (type B signaling molecule), and the reaction equations are as follows [2,3]
@@ -37,18 +45,27 @@ $$
 	<=>[$k_3$][$k_{-3}$]E + (S)man},
 $$
 where E denotes the enzyme MR, and E$\cdot$(R)man and E$\cdot$(S)man denote intermediate complexes of MR and (R)man and (S)man, respectively. 
-The corresponding reaction rates are denoted by $k_1, \,k_2, \,k_3$ and $k_{-1},\, k_{-2}, k_{-3}$, respectively. 
+The corresponding reaction rates are denoted by $k_1, \\,k_2, \\,k_3$ and $k_{-1}, \\, k_{-2}, \\, k_{-3}$, respectively. 
 
 #### Reaction Rate Equations 
 
 \begin{align*}
-\frac{\partial [E]}{\partial t} &= k_{-1}[ER] - k_1[E][R] + k_3 [ES] - k_{-3}[E][S],\\
-\frac{\partial [ER]}{\partial t} &= k_1 [E][R] - k_{-1} [ER] + k_{-2} [ES] - k_2 [ER],\\
-\frac{\partial [ES]}{\partial t} &= k_{-3} [E][S] - k_{3}[ES] + k_2 [ER] - k_{-2} [ES],\\
-\frac{\partial [R]}{\partial t} &= k_{-1}[ER] - k_1[E][R],\\
+\frac{\partial [E]}{\partial t} &= k_{-1}[ER] - k_1[E][R] + k_3 [ES] - k_{-3}[E][S],\\\
+\frac{\partial [ER]}{\partial t} &= k_1 [E][R] - k_{-1} [ER] + k_{-2} [ES] - k_2 [ER],\\\
+\frac{\partial [ES]}{\partial t} &= k_{-3} [E][S] - k_{3}[ES] + k_2 [ER] - k_{-2} [ES],\\\
+\frac{\partial [R]}{\partial t} &= k_{-1}[ER] - k_1[E][R],\\\
 \frac{\partial [S]}{\partial t} &= k_3[ES] - k_{-3} [E][S],
 \end{align*}
 where [E], [R], [S], [ER], and [ES], denote the concentration of MR, (R)man, (S)man, E$\cdot$(R)man amd E$\cdot$(S)man, respectively.
+
+#### Solution 1
+
+#### Solution 2
+
+#### Remarks on the Implementation 
+
+
+
 
 ### 1. Preliminaries
 
