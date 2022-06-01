@@ -88,11 +88,4 @@ The following videos correspond to the scenario in Fig. 8b, i.e., a point releas
 
 **The videos for a specific number of eigenvalues $Q$, defined by vector $\mathbf{q}$ are selected by clicking on the corresponding button**
 ### 7. References 
-[1] M. Schäfer, W. Wicke, L. Brand, R. Rabenstein and R. Schober, "_Transfer Function Models for Diffusion and Laminar Flow in Cylindrical Systems_", submitted to IEEE Trans. Mol. Biol. Multi-Scale Commun., 2020, [online]: https://arxiv.org/abs/2007.01799 
-
-[2] V. Jamali, A. Ahmadzadeh, W. Wicke, A. Noel, and R. Schober, “_Channel Modeling for Diffusive Molecular Communication—A Tutorial Review_,” Proceedings of the IEEE, vol. 107, no. 7, pp. 1256–1301, 2019.
-
-[3] W. Wicke, T. Schwering, A. Ahmadzadeh, V. Jamali, A. Noel, and R. Schober, “_Modeling Duct Flow for Molecular Communication_,” in Proc. IEEE Global Commun. Conf. (GLOBECOM), 2018, pp. 206–212.
-
-[4] J. Grant and M. Wilkinson, “_Advection–Diffusion Equation with Absorbing Boundary_,” Journal of Statistical Physics,
-vol. 160, no. 3, pp. 622–635, 2015. [Online]. Available: https://doi.org/10.1007/s10955-015-1257-2
+[1] M. Schäfer, L. Brand, S. Lotter, A. Büyükoglu, F. Enzenhofer, W. Haselmayr, K. Castiglione, D. Appelhans and R. Schober, "_Controlled Signaling and Transmitter Replenishment for MC with Functionalized Nanoparticles_", submitted to 9th ACM Int. Conf. Nanosc. Comp. Commun. , 2022, [online]: TODO
