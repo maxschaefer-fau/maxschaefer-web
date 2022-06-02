@@ -68,60 +68,69 @@ The corresponding reaction rates are denoted by $k_1, \\,k_2, \\,k_3$ and $k_{-1
 
 #### Remarks on the Implementation 
 
-As described in [1, Sec. 4], eq. (12) in [1] cannot be solved in a closed form. Instead we developed a numerical model that is evaluated in each discrete time step. __The Python Code can be found on__ [GitHub](https://github.com/maxschaefer-fau/TX-Signaling-Replenishment-MC) 
+As described in [1, Sec. 4], eq. (12) in [1] cannot be solved analytically. Instead we developed a numerical model that is evaluated in each discrete time step. __The Python Code can be found on__ [GitHub](https://github.com/maxschaefer-fau/TX-Signaling-Replenishment-MC) 
 We obtained a numerical model as follows: 
 
-##### 1. Decomposition into three bidirectional reactions
+##### Decomposition into three bidirectional reactions
 First, we assume a pseudo steady state and derive a reaction rate equation for the three individual bidirectional reactions in [1, Eq. (12)] see, e.g., [4,5].
 
 The individual bidirectional equations and the associated steady state reaction rate equations are as follows:
 
 __Reaction 1__
+The first bidirectional reaction in (12) follows as
 \begin{align*}
-&\ce{E + (R)man <=>[$k_1$][$k_{-1}$] E*(R)man} &&\mathrm{(12a)}
+&\ce{E + (R)man <=>[$k_1$][$k_{-1}$] E*(R)man} &&\mathrm{(12a)}.
 \end{align*}
-
+The associated reaction rate equation assuming a steady state follows as 
 \begin{align*}
-&\frac{\partial [E]}{\partial t} = 0, &k_{-1}[ER] - k_1[E][R] = 0 &&\mathrm{(12b)}
+&\frac{\partial [E]}{\partial t} = 0, &k_{-1}[ER] - k_1[E][R] = 0, &&\mathrm{(12b)}
 \end{align*}
+where [E], [R], and [ER] denote the concentration of MR, (R)man, and E$\cdot$(R)man, respectively.
 
 __Reaction 2__
+The second bidirectional reaction in (12) follows as 
 \begin{align*}
-&\ce{E*(R)man <=>[$k_2$][$k_{-2}$] E*(S)man} &&\mathrm{(12c)}
+&\ce{E*(R)man <=>[$k_2$][$k_{-2}$] E*(S)man}. &&\mathrm{(12c)}
 \end{align*}
-
+The associated reaction rate equation assuming a steady state follows as 
 \begin{align*}
-&\frac{\partial [ER]}{\partial t} = 0, &k_{-2}[ES] - k_2[ER] = 0 &&\mathrm{(12d)}
+&\frac{\partial [ER]}{\partial t} = 0, &k_{-2}[ES] - k_2[ER] = 0, &&\mathrm{(12d)}
 \end{align*}
+where [ER] and [ES] denote the concentration E$\cdot$(R)man and E$\cdot$(S)man, respectively.
 
 __Reaction 3__
-
+The second bidirectional reaction in (12) follows as 
 \begin{align*}
 &\ce{E*(S)man 
-	<=>[$k_3$][$k_{-3}$]E + (S)man} &&\mathrm{(12e)}
+	<=>[$k_3$][$k_{-3}$]E + (S)man}. &&\mathrm{(12e)}
 \end{align*}
-
+The associated reaction rate equation assuming a steady state follows as 
 \begin{align*}
-&\frac{\partial [ES]}{\partial t} = 0, &k_{-3}[E][S] - k_3[ES] = 0 &&\mathrm{(12f)}
+&\frac{\partial [ES]}{\partial t} = 0, &k_{-3}[E][S] - k_3[ES] = 0, &&\mathrm{(12f)}
+\end{align*}
+where [E], [S], and [ES] denote the concentration of MR, (S)man and E$\cdot$(S)man, respectively.
+
+For all three reaction rate equations (12b), (12d), (12f) a numerical model can be obtained straightforwardly, e.g., by numerical integration or by a solution in terms of an exponential approach. Further details on the exact numerical implementation of the individual bidirectional reactions can be found in the associated [Python code](https://github.com/maxschaefer-fau/TX-Signaling-Replenishment-MC).
+
+##### Algorithm
+
+Figure 1 shows the process of the developed algorithm to calculate the concentrations of all reaction partners in (12) by a sequential numerical evaluation of Eqs. (12b), (12d), (12f) in the current time step $k$ from the concentrations in the previous time step $k-1$, where we denote the concentrations in time step $k$ according to Eqs. (12b), (12d), (12f) as follows:
+\begin{align*}
+[E]_k, \\, [R]_k, \\, [S]_k, \\, [ES]_k, \\, [ER]_k. 
 \end{align*}
 
-__Algorithm__ 
+{{< figure src="img/reaction.png" caption="Algorithm to calculate concentrations in time step $k$ from previous time step $k-1$" numbered="true" >}}
 
-In each time step we calculate the concentration of (R)man and (S)man based on the concentrations from the previous time step. 
-All individual reactions are evaluated sequentially, e.g., 
-- we calculate the concentration of (S)man in time step $k$, $C^{\mathrm{S}}[k]$, from the (R)man and (S)man concentrations in the previous time step $k-1$, $C^{\mathrm{R}}[k-1]$ and $C^{\mathrm{S}}[k-1]$
-- Then the concentration of (R)man in time step $k$, $C^{\mathrm{R}}[k]$, is 
-
+<!---
 __Conditions__
-
-The derived numerical model (see [GitHub](https://github.com/maxschaefer-fau/TX-Signaling-Replenishment-MC)) based on the decomposition of (12) is valid under the following conditions: 
+ The derived numerical model (see [GitHub](https://github.com/maxschaefer-fau/TX-Signaling-Replenishment-MC)) based on the decomposition of (12) is valid under the following conditions: 
 - As the individual reaction parts are evaluated sequentially, the discrete time step ($T$ in [1]) has to be small enough (Also holds for other numerical integration methods)
 - The backward and forward reaction rates are in a similar range which is fulfilled for the considered enzyme MR 
 
 The validity of our developed numerical model is verified in [1] by the excellent agreement with the results obtained from Particle Based Simulation (PBS).
+-->
 
-
-#### 2. Alternative Numerical Model 
+##### Alternative Numerical Model 
 
 Alternatively, a numerical model for the MR reaction can be obtained by transforming (12) fully into reaction rate equations without further assumptions. This leads to the set of Ordinary Differential Equations (ODEs):
 \begin{align*}
@@ -131,12 +140,9 @@ Alternatively, a numerical model for the MR reaction can be obtained by transfor
 \frac{\partial [R]}{\partial t} &= k_{-1}[ER] - k_1[E][R],\\\
 \frac{\partial [S]}{\partial t} &= k_3[ES] - k_{-3} [E][S],
 \end{align*}
-where [E], [R], [S], [ER], and [ES], denote the concentration of MR, (R)man, (S)man, E$\cdot$(R)man amd E$\cdot$(S)man, respectively.
+where [E], [R], [S], [ER], and [ES], denote the concentration of MR, (R)man, (S)man, E$\cdot$(R)man and E$\cdot$(S)man, respectively.
 
 This set of ODEs can be solved by different numerical methods, e.g., numerical integration or Euler Method, see [4] and references within for details.
-
-
-
 
 ###  References 
 [1] M. Schäfer, L. Brand, S. Lotter, A. Büyükoglu, F. Enzenhofer, W. Haselmayr, K. Castiglione, D. Appelhans and R. Schober, "_Controlled Signaling and Transmitter Replenishment for MC with Functionalized Nanoparticles_", submitted to 9th ACM Int. Conf. Nanosc. Comp. Commun. , 2022, [online]: TODO

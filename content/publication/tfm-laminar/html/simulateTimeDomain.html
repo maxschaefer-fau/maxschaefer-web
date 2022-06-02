@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>simulateTimeDomain</title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1894.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 16.8px; font: 15.0px Courier; color: #1f7c1a; background-color: #f5f5f5}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 16.8px; font: 15.0px Courier; color: #0000ff; -webkit-text-stroke: #0000ff; background-color: #f5f5f5; min-height: 18.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 16.8px; font: 15.0px Courier; color: #000000; -webkit-text-stroke: #000000; background-color: #f5f5f5}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 16.8px; font: 15.0px Courier; color: #000000; -webkit-text-stroke: #000000; background-color: #f5f5f5; min-height: 18.0px}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 16.8px; font: 15.0px Courier; color: #1f7c1a; -webkit-text-stroke: #1f7c1a; background-color: #f5f5f5}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 16.8px; font: 15.0px Courier; color: #0000ff; -webkit-text-stroke: #0000ff; background-color: #f5f5f5}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 16.8px; font: 15.0px Courier; color: #fb0007; -webkit-text-stroke: #fb0007; min-height: 18.0px}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 13.4px; font: 12.6px Arial; color: #747474; -webkit-text-stroke: #747474}
+    span.s1 {font-kerning: none}
+    span.s2 {font-kerning: none; color: #0000ff; -webkit-text-stroke: 0px #0000ff}
+    span.s3 {font-kerning: none; color: #000000; -webkit-text-stroke: 0px #000000}
+    span.s4 {font: 12.6px Arial; font-kerning: none; color: #747474; background-color: transparent}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">%% simulateTimeDomain<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">%<span class="Apple-converted-space">  </span>Evaluation of the auxiliary state equation exploiting block structuring of feedback matrices K_uni, K_lam and eigenvalues decomposition<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">%</span></p>
+<p class="p1"><span class="s1">%<span class="Apple-converted-space">  </span>inputs:<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">%<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Az: <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Decomposed state matrix \Lambda_n</span></p>
+<p class="p1"><span class="s1">%<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fe, yi: <span class="Apple-tab-span">	</span>Associated inputs fe_n, yi_n</span></p>
+<p class="p1"><span class="s1">%<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>T: <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Time step</span></p>
+<p class="p1"><span class="s1">%<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>U, Uinv: <span class="Apple-tab-span">	</span>Matrices U and U^{-1} from decomposition</span></p>
+<p class="p1"><span class="s1">%</span></p>
+<p class="p1"><span class="s1">%<span class="Apple-converted-space">  </span>outputs:<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">%<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ybar_n: <span class="Apple-tab-span">	</span>System states ybar_n[k] <span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></span></p>
+<p class="p1"><span class="s1">%</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p3"><span class="s2">function</span><span class="s1"> [ybar_n] = simulateTimeDomain(Az,fe,yi,T, U, Uinv)</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p5"><span class="s1">% number of eigenvalues Q_n and time duration t_dur</span></p>
+<p class="p3"><span class="s1">Mu = size(Az,1);</span></p>
+<p class="p3"><span class="s1">dur = size(fe,2);</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p5"><span class="s1">% define auxiliary system states<span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="s1">uybar = zeros(Mu,size(fe,2));</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p5"><span class="s1">% create a single input from fe and yi<span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="s1">yi_time = zeros(Mu, size(fe,2));</span></p>
+<p class="p3"><span class="s1">yi_time(:,1) = yi;</span></p>
+<p class="p3"><span class="s1">excite = fe + yi_time;</span></p>
+<p class="p3"><span class="s1">uexcite = Uinv*excite;</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p5"><span class="s1">% evaluate individual lines of auxiliary state equation</span></p>
+<p class="p3"><span class="s2">for</span><span class="s1"> mu = 1:Mu</span></p>
+<p class="p1"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s1">% evaluate individual lines by first-order filters</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span>uybar(mu,:) = filter(1,[1, -Az(mu,mu)],T*uexcite(mu,:));</span></p>
+<p class="p6"><span class="s1">end</span></p>
+<p class="p4"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">% convert auxiliary states to desired system states ybar_n</span></p>
+<p class="p3"><span class="s1">ybar_n = U*uybar;</span></p>
+<p class="p7"><span class="s1"></span><br></p>
+<p class="p8"><span class="s1"><i><br>
+</i><a href="https://www.mathworks.com/products/matlab/"><span class="s4"><i>Published with MATLAB® R2019a</i></span></a><i><br>
+</i></span></p>
+</body>
+</html>
