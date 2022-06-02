@@ -20,35 +20,110 @@ url_demo: "/publication/TXsignal-replenish/"
 
 ---
 
+# Supplementary Material
+
 ### Contents:
-1. Preliminaries
-2. Videos of the propagation of the particles in the cylinder for a [*uniform release*](#2-uniform-release-of-particles) supplementary to Fig. 4 (see [[1, Sec. V-D]](#7-references))
-3. Videos of the propagation of the particles in the cylinder for a [*point release*](#3-point-release-of-particles) supplementary to Fig. 5 (see [[1, Sec. V-E]](#7-references))
-4. Videos of the propagation of the particles in the cylinder for [*analysis of accuracy*](#analysis-of-accuracy) (see [[1, Sec. VI-B]](#7-references))
-5. Remarks regarding the [*implementation*](#5-implementation) (see [[1, Sec. VI-A]](#7-references))
-6. [*Performance analysis*](#6-analysis-of-runtime-and-complexity)
-7. [*References*](#7-references) 
+1. Short summary of the proposed Transmitter (Tx) model including a description of the main features
+2. Short summary of the practical realization of the proposed Tx model
+3. Supplementary material for the Enzyme reaction and remarks on the implementation 
+
+### 1. System Model 
+
+As described in [1, Sec. 2], we propose a novel Transmitter (Tx) design for synthetic Molecular Communication (MC) systems employing functionalized Nanoparticles (NPs). The envisioned Tx comprises two main mechanisms namely 
+
+- a __controlled release mechanism__, which enables the release of signaling molecules controlled by an external stimulus (see Animation 1, left hand side),
+- a __reloading mechanism__ enabling the production of signaling molecules inside the Tx from molecules recruited from the surrounding environment (see Animation 1, right hand side).
+
+{{< video src="videos/Animation5.mp4" controls="yes" >}}
+__Animation 1__: <font size="4">Left hand side: Controlled release of signaling type B molecules (red) by controlled opening of the Tx membrane. Right hand side: Reloading of type A molecules (blue) from the surrounding environment and conversion into signaling type B molecules.</font>
+
+Both, the __controlled release__ and the __reloading__ are facilitated by the design and functionalization of the NP. The __controlled release mechanism__ is realized by functionalization of the NP with a switchable membrane allowing for the control of its permeability by an external stimulus.
+The __reloading mechanism__ is realized by enzymes encapsulated in the NP allowing for the conversion of molecules recruited from the surrounding environment, denoted as type A molecules, in signaling molecules, denoted as type B molecules. 
+The switching of the NP membrane between the open and closed states is exploited for both the controlled release of type B molecules and the reloading of type A molecules, while the membrane is impermeable for enzymes in both states. 
 
 
-### System Model 
 
-#### Overall System Model 
+### 2. Practical Realization of the proposed Tx Model 
 
-#### Reloading Mechanism 
+In [1, Sec. 4] we describe a realization of the proposed Tx model based on practical components: 
+- The __membrane switching__ for the controlled release is facilitated by polymersomes, the synthetic counterpart of liposomes, with a pH-driven permeability switch
+- The __reloading mechanism__ (signaling molecule production) is realized by the encapsulation of the enzyme _Mandelate Racemase (MR)_ into the NP. MR performs a reversible one-substrate-reaction of _(R)-Mandelate_ (type A molecules) to _(S)-Mandelate_ (type B signaling molecule)
+The switching process of the NP is shown below in __Animation 2__, cf. [1, Fig. 2]
 
+{{< video src="videos/Animation4.mp4" controls="yes" >}}
+__Animation 2__: <font size="4">Reloading and release process of the practical Tx model. Process flow:
+	Only type (R)man molecules (blue) and enzymes (green) are present in the environment; 
+	pH-decrease triggers the opening of the Tx membrane and (R)man molecules diffuse into the NP and are converted to (S)man signaling molecules (red); pH-increase triggers closing of the Tx membrane; pH-decrease triggers opening of the Tx membrane and the produced (S)man molecules are released while additional (R)man is harvested. 
+    </font>
 
-### Chemical Reaction 
+### 3. Supplementary Material - Enzyme Reaction
 
 The enzyme _Mandelate Racemase (MR)_ performs a reversible one-substrate-reaction of _(R)-Mandelate_ (type A molecules) to _(S)-Mandelate_ (type B signaling molecule), and the reaction equations are as follows [2,3]
-$$ 
-\ce{E + (R)man <=>[$k_1$][$k_{-1}$] E*(R)man <=>[$k_2$][$k_{-2}$] E*(S)man 
-	<=>[$k_3$][$k_{-3}$]E + (S)man},
-$$
+\begin{align}
+&\ce{E + (R)man <=>[$k_1$][$k_{-1}$] E*(R)man <=>[$k_2$][$k_{-2}$] E*(S)man 
+	<=>[$k_3$][$k_{-3}$]E + (S)man}, \\, \mathrm{(12)}
+\end{align}
 where E denotes the enzyme MR, and E$\cdot$(R)man and E$\cdot$(S)man denote intermediate complexes of MR and (R)man and (S)man, respectively. 
 The corresponding reaction rates are denoted by $k_1, \\,k_2, \\,k_3$ and $k_{-1}, \\, k_{-2}, \\, k_{-3}$, respectively. 
 
-#### Reaction Rate Equations 
+#### Remarks on the Implementation 
 
+As described in [1, Sec. 4], eq. (12) in [1] cannot be solved in a closed form. Instead we developed a numerical model that is evaluated in each discrete time step. __The Python Code can be found on__ [GitHub](https://github.com/maxschaefer-fau/TX-Signaling-Replenishment-MC) 
+We obtained a numerical model as follows: 
+
+##### 1. Decomposition into three bidirectional reactions
+First, we assume a pseudo steady state and derive a reaction rate equation for the three individual bidirectional reactions in [1, Eq. (12)] see, e.g., [4,5].
+
+The individual bidirectional equations and the associated steady state reaction rate equations are as follows:
+
+__Reaction 1__
+\begin{align*}
+&\ce{E + (R)man <=>[$k_1$][$k_{-1}$] E*(R)man} &&\mathrm{(12a)}
+\end{align*}
+
+\begin{align*}
+&\frac{\partial [E]}{\partial t} = 0, &k_{-1}[ER] - k_1[E][R] = 0 &&\mathrm{(12b)}
+\end{align*}
+
+__Reaction 2__
+\begin{align*}
+&\ce{E*(R)man <=>[$k_2$][$k_{-2}$] E*(S)man} &&\mathrm{(12c)}
+\end{align*}
+
+\begin{align*}
+&\frac{\partial [ER]}{\partial t} = 0, &k_{-2}[ES] - k_2[ER] = 0 &&\mathrm{(12d)}
+\end{align*}
+
+__Reaction 3__
+
+\begin{align*}
+&\ce{E*(S)man 
+	<=>[$k_3$][$k_{-3}$]E + (S)man} &&\mathrm{(12e)}
+\end{align*}
+
+\begin{align*}
+&\frac{\partial [ES]}{\partial t} = 0, &k_{-3}[E][S] - k_3[ES] = 0 &&\mathrm{(12f)}
+\end{align*}
+
+__Algorithm__ 
+
+In each time step we calculate the concentration of (R)man and (S)man based on the concentrations from the previous time step. 
+All individual reactions are evaluated sequentially, e.g., 
+- we calculate the concentration of (S)man in time step $k$, $C^{\mathrm{S}}[k]$, from the (R)man and (S)man concentrations in the previous time step $k-1$, $C^{\mathrm{R}}[k-1]$ and $C^{\mathrm{S}}[k-1]$
+- Then the concentration of (R)man in time step $k$, $C^{\mathrm{R}}[k]$, is 
+
+__Conditions__
+
+The derived numerical model (see [GitHub](https://github.com/maxschaefer-fau/TX-Signaling-Replenishment-MC)) based on the decomposition of (12) is valid under the following conditions: 
+- As the individual reaction parts are evaluated sequentially, the discrete time step ($T$ in [1]) has to be small enough (Also holds for other numerical integration methods)
+- The backward and forward reaction rates are in a similar range which is fulfilled for the considered enzyme MR 
+
+The validity of our developed numerical model is verified in [1] by the excellent agreement with the results obtained from Particle Based Simulation (PBS).
+
+
+#### 2. Alternative Numerical Model 
+
+Alternatively, a numerical model for the MR reaction can be obtained by transforming (12) fully into reaction rate equations without further assumptions. This leads to the set of Ordinary Differential Equations (ODEs):
 \begin{align*}
 \frac{\partial [E]}{\partial t} &= k_{-1}[ER] - k_1[E][R] + k_3 [ES] - k_{-3}[E][S],\\\
 \frac{\partial [ER]}{\partial t} &= k_1 [E][R] - k_{-1} [ER] + k_{-2} [ES] - k_2 [ER],\\\
@@ -58,67 +133,18 @@ The corresponding reaction rates are denoted by $k_1, \\,k_2, \\,k_3$ and $k_{-1
 \end{align*}
 where [E], [R], [S], [ER], and [ES], denote the concentration of MR, (R)man, (S)man, E$\cdot$(R)man amd E$\cdot$(S)man, respectively.
 
-#### Solution 1
-
-#### Solution 2
-
-#### Remarks on the Implementation 
+This set of ODEs can be solved by different numerical methods, e.g., numerical integration or Euler Method, see [4] and references within for details.
 
 
 
 
-### 1. Preliminaries
-
-We note that the variables in the presented formulas are defined in [[1]](#7-references).
-
-#### 1.1 Summary of the proposed model
-
-The considered advection-diffusion problem with laminar flow is mathematically described by the PDE [[1, Eq. (4)]](#7-references) 
-\begin{align*}
-\frac{\partial}{\partial t}p(\mathbf{x},t) = D \mbox{div}\left(\mbox{grad}\left( p(\mathbf{x},t)\right)\right) - \mbox{div} \left(p(\mathbf{x},t) v(r)\mathbf{e}_z\right),
-\end{align*}
-with the radius dependent flow velocity [[1, Eq. (5)]](#7-references) 
-\begin{align*}
-v(r) = v_0\left(1 - \frac{r^2}{R_0^2}\right).
-\end{align*}
-
-
-
-
-
-<!--alpha 1e-1-->
-<script>
-function setvideo_p01(src) {
-    document.getElementById('div_video_p01').innerHTML = '<video autoplay controls id="video_ctrl_p01"><source src="'+src+'" type="video/mp4"></video>';
-    document.getElementById('video_ctrl_p01').play();
-}
-</script>
-
-|$\alpha$         		|Eigenvalues            | Release type 		| 
-| ------------------		| --------------------- | ---------------------	| 
-|$\alpha = 0.1$| $Q = 12.6\cdot 10^{4}$, $\mathbf{q} = [20, 30, 200]$ | point |
-
-
-<button onClick="setvideo_p01('./point_alpha_1e-1_re075.mp4');">$r_e = 0.75$</button>
-<button onClick="setvideo_p01('./point_alpha_1e-1_re05.mp4');">$r_e = 0.5$</button>
-<button onClick="setvideo_p01('./point_alpha_1e-1_re025.mp4');">$r_e = 0.25$</button>
-<div id="div_video_p01"> </div>
-
-- For $Q = 100$ and $Q = 20$ the reflections become stronger and are not attenuating, instead they are propagating in the cylinder and interfere the concentration at the receiver, see black and orange curves in [[1, Fig. 8a]](#7-references).
-
-
-##### 4.3.2 Point release of particles
-
-The following videos correspond to the scenario in Fig. 8b, i.e., a point release of particles for different values of $Q$.
-
-|$\alpha$         		|Eigenvalues            | Release type 		| 
-| ------------------		| --------------------- | ---------------------	| 
-|$\alpha = 1 \cdot 10^{-2}$ | varied | point |
-
-**The videos for a specific number of eigenvalues $Q$, defined by vector $\mathbf{q}$ are selected by clicking on the corresponding button**
-### 7. References 
+###  References 
 [1] M. Schäfer, L. Brand, S. Lotter, A. Büyükoglu, F. Enzenhofer, W. Haselmayr, K. Castiglione, D. Appelhans and R. Schober, "_Controlled Signaling and Transmitter Replenishment for MC with Functionalized Nanoparticles_", submitted to 9th ACM Int. Conf. Nanosc. Comp. Commun. , 2022, [online]: TODO
 
 [2] M. St. Maurice and S. L. Bearne. 2002. "_Kinetics and Thermodynamics ofMandelate Racemase Catalysis_". Biochem. 41, 12 (2002), 4048-4058. 
 
 [3] Ariun Narmandakh and Stephen L. Bearne. 2010. "_Purification of Recombinant Mandelate Racemase: Improved Catalytic Activity_". Protein Expression and Purification, 69, 1 (2010), 39-46. https://doi.org/10.1016/j.pep.2009.06.022
+
+[4] D. J. Higham. 2008. "_Modeling and Simulating Chemical Reactions_". SIAMRev. 50, 2 (2008), 347-368. https://doi.org/10.1137/060666457
+
+[5] L. A. Segel and M. Slemrod. 1989. "_The Quasi-Steady-State Assumption: ACase Study in Perturbation_". SIAMRev. 31, 3 (1989), 446-477.
