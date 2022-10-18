@@ -5,7 +5,7 @@ widget: pages
 
 # This file represents a page section.
 headless: true
-active: false
+active: true
 # Order that this section appears on the page.
 weight: 60
 
@@ -16,7 +16,9 @@ content:
   # Filter on criteria
   filters:
     folders:
-      - post
+      - awards
+      - project 
+      - publication
     tag: ''
     category: ''
     publication_type: ''
@@ -25,7 +27,7 @@ content:
     exclude_future: false
     exclude_past: false
   # Choose how many pages you would like to display (0 = all pages)
-  count: 5
+  count: 3
   # Choose how many pages you would like to offset by
   offset: 0
   # Page order: descending (desc) or ascending (asc) date.
